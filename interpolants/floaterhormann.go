@@ -6,11 +6,18 @@ import "math"
 // rational interpolants introduced by Floater and Hormann in 2007
 // are “blends” of polynomial interpolants of fixed degree d.
 // See: http://homeweb2.unifr.ch/kleing/pub/resources/Klein_final.pdf
-func NewFloaterHormannInterpolator(X []float64, Y []float64, d int) Interpolator {
+func NewFloaterHormannInterpolator(X, Y []float64, d int) Interpolator {
 
-	n := len(X)
+	n := len(Y)
 
-	if n != len(Y) {
+	if X == nil {
+		X = make([]float64, n)
+		for i := 0; i < n; i++ {
+			X[i] = float64(i)
+		}
+	}
+
+	if n != len(X) {
 		panic("Numbers of elements X and Y not equal")
 	}
 	if d <= 0 {
