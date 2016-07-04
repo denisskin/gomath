@@ -1,6 +1,9 @@
 package vector
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Vector []float64
 
@@ -83,4 +86,80 @@ func (v Vector) Add(v1 Vector) {
 	for i, x := range v1 {
 		v[i] += x
 	}
+}
+
+// Sum returns the sum of values
+func (v Vector) Sum() (sum float64) {
+	for _, x := range v {
+		sum += x
+	}
+	return
+}
+
+const nan = math.NaN()
+
+// Avg returns the average value of vector values
+func (v Vector) Avg() float64 {
+	if n := len(v); n > 0 {
+		return v.Sum() / n
+	}
+	return nan
+}
+
+// StdDev returns the population standard deviation
+func (v Vector) StdDev() float64 {
+	if n := len(v); n > 0 {
+		sx, sx2 := 0., 0.
+		for _, x := range v {
+			sx += x
+			sx2 += x * x
+		}
+		mx := sx / n
+		return math.Sqrt(sx2/n - mx*mx)
+	}
+	return nan
+}
+
+// LinearRegression returns regression
+func (v Vector) LinearRegression(k, b, R2 float64) {
+	n := len(v)
+	sxy := 0.0
+	sx, sx2 := 0.0, 0.0
+	sy, sy2 := 0.0, 0.0
+
+	for x, y := range v {
+		sx += x
+		sy += y
+		sx2 += x * x
+		sy2 += y * y
+		sxy += x * y
+	}
+	k = (sxy*n - sx*sy) / (sx2*n - sx*sx)
+	b = (sy - k*sx) / n
+	R2 = (n*sxy - sx*sy) / math.Sqrt((n*sx2-sx*sx)*(n*sy2-sy*sy))
+	return
+}
+
+//
+func LinearRegression(X, Y Vector) (k, b, R2 float64) {
+	n := len(X)
+	if len(Y) != n {
+		panic("Enexpected number of elements")
+	}
+	sxy := 0.0
+	sx, sx2 := 0.0, 0.0
+	sy, sy2 := 0.0, 0.0
+
+	for i, x := range X {
+		y := Y[i]
+		sx += x
+		sy += y
+		sx2 += x * x
+		sy2 += y * y
+		sxy += x * y
+	}
+	k = (sxy*n - sx*sy) / (sx2*n - sx*sx)
+	b = (sy - k*sx) / n
+	R2 = (n*sxy - sx*sy) / math.Sqrt((n*sx2-sx*sx)*(n*sy2-sy*sy))
+	return
 }
