@@ -47,8 +47,8 @@ func (v Vector) Clone() Vector {
 }
 
 // Push adds an element to the end of the vector.
-func (v Vector) Push(x float64) {
-	v = append(v, x)
+func (v *Vector) Push(x float64) {
+	*v = append(*v, x)
 }
 
 // Pop removes an element from the end of the vector.
@@ -58,14 +58,15 @@ func (v Vector) Pop() (x float64) {
 }
 
 // Shift adds an element to the beginning of the vector.
-func (v Vector) Shift() (x float64) {
-	x, v = v[0], v[1:]
+func (v *Vector) Shift() (x float64) {
+	pv := *v
+	x, *v = pv[0], pv[1:]
 	return
 }
 
 // Unshift removes an element from the beginning of the vector.
-func (v Vector) Unshift(x float64) {
-	v = append(Vector{x}, v...)
+func (v *Vector) Unshift(x float64) {
+	*v = append(Vector{x}, *v...)
 }
 
 // Map applies the callback function to the elements of the vector and returns new Vector with results.
@@ -96,14 +97,12 @@ func (v Vector) Sum() (sum float64) {
 	return
 }
 
-const nan = math.NaN()
-
 // Avg returns the average value of vector values
 func (v Vector) Avg() float64 {
 	if n := len(v); n > 0 {
-		return v.Sum() / n
+		return v.Sum() / float64(n)
 	}
-	return nan
+	return math.NaN()
 }
 
 // StdDev returns the population standard deviation
@@ -114,52 +113,8 @@ func (v Vector) StdDev() float64 {
 			sx += x
 			sx2 += x * x
 		}
-		mx := sx / n
-		return math.Sqrt(sx2/n - mx*mx)
+		mx := sx / float64(n)
+		return math.Sqrt(sx2/float64(n) - mx*mx)
 	}
-	return nan
-}
-
-// LinearRegression returns regression
-func (v Vector) LinearRegression(k, b, R2 float64) {
-	n := len(v)
-	sxy := 0.0
-	sx, sx2 := 0.0, 0.0
-	sy, sy2 := 0.0, 0.0
-
-	for x, y := range v {
-		sx += x
-		sy += y
-		sx2 += x * x
-		sy2 += y * y
-		sxy += x * y
-	}
-	k = (sxy*n - sx*sy) / (sx2*n - sx*sx)
-	b = (sy - k*sx) / n
-	R2 = (n*sxy - sx*sy) / math.Sqrt((n*sx2-sx*sx)*(n*sy2-sy*sy))
-	return
-}
-
-//
-func LinearRegression(X, Y Vector) (k, b, R2 float64) {
-	n := len(X)
-	if len(Y) != n {
-		panic("Enexpected number of elements")
-	}
-	sxy := 0.0
-	sx, sx2 := 0.0, 0.0
-	sy, sy2 := 0.0, 0.0
-
-	for i, x := range X {
-		y := Y[i]
-		sx += x
-		sy += y
-		sx2 += x * x
-		sy2 += y * y
-		sxy += x * y
-	}
-	k = (sxy*n - sx*sy) / (sx2*n - sx*sx)
-	b = (sy - k*sx) / n
-	R2 = (n*sxy - sx*sy) / math.Sqrt((n*sx2-sx*sx)*(n*sy2-sy*sy))
-	return
+	return math.NaN()
 }
