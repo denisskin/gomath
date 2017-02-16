@@ -1,12 +1,12 @@
-package interpolants
+package interpolation
 
 import "math"
 
-// NewFloaterHormannInterpolator creates interpolator function by the method barycentric
-// rational interpolants introduced by Floater and Hormann in 2007
-// are “blends” of polynomial interpolants of fixed degree d.
+// FloaterHormannInterpolation creates interpolation function by the method barycentric
+// rational interpolation introduced by Floater and Hormann in 2007
+// are “blends” of polynomial interpolation of fixed degree d.
 // See: http://homeweb2.unifr.ch/kleing/pub/resources/Klein_final.pdf
-func NewFloaterHormannInterpolator(X, Y []float64, d int) Interpolator {
+func FloaterHormannInterpolation(X, Y []float64, d int) Func {
 
 	n := len(Y)
 
@@ -30,7 +30,7 @@ func NewFloaterHormannInterpolator(X, Y []float64, d int) Interpolator {
 		}
 	}
 	if d <= 0 || d >= n {
-		panic("Enexpected parametr d! (Sholud be 0 < d < n)")
+		panic("Enexpected parametr d! (Should be 0 < d < n)")
 	}
 
 	w := make([]float64, n)
