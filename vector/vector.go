@@ -118,3 +118,25 @@ func (v Vector) StdDev() float64 {
 	}
 	return math.NaN()
 }
+
+// Min returns the minimum value of vector values
+func (v Vector) Min() (min float64) {
+	min = math.NaN()
+	for i, v := range v {
+		if i == 0 || v < min {
+			min = v
+		}
+	}
+	return
+}
+
+// Max returns the maximum value of vector values
+func (v Vector) Max() (max float64) {
+	max = math.NaN()
+	for i, v := range v {
+		if i == 0 || v > max {
+			max = v
+		}
+	}
+	return
+}
