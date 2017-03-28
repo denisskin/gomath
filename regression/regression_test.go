@@ -1,11 +1,11 @@
 package regression
 
 import (
-	"testing"
+	"github.com/denisskin/gomath/vector"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"math/rand"
-	"github.com/denisskin/gomath/vector"
+	"testing"
 )
 
 func fnLine(x float64) float64 {
@@ -35,7 +35,7 @@ func testRegression(regression RegressionFunc, fn Func) (dev float64) {
 
 	x0 := X.Avg()
 
-	return math.Abs(fnReg(x0)/fn(x0)-1)
+	return math.Abs(fnReg(x0)/fn(x0) - 1)
 }
 
 func TestLinearRegression(t *testing.T) {
