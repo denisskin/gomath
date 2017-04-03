@@ -1,10 +1,11 @@
 package interpolation
 
 import (
-	"github.com/denisskin/gomath/vector"
-	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
+
+	"github.com/denisskin/gomath/vector"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestFloaterHormannInterpolation(t *testing.T) {
@@ -25,9 +26,9 @@ func TestFloaterHormannInterpolation(t *testing.T) {
 	x := 0.00 // the exact values are equal
 	assert.True(t, fn(x) == fn1(x))
 
-	x, err := 0.13, 0.01 // interpolation  with 1% divergence
-	assert.True(t, math.Abs(fn(x)/fn1(x)-1) < err)
+	x = 0.13 // interpolation  with 1% divergence
+	assert.True(t, math.Abs(fn(x)/fn1(x)-1) < 0.01)
 
-	x, err = 1.10, 0.03 // extrapolation with 3% divergence
-	assert.True(t, math.Abs(fn(x)/fn1(x)-1) < err)
+	x = 1.10 // extrapolation with 3% divergence
+	assert.True(t, math.Abs(fn(x)/fn1(x)-1) < 0.03)
 }
