@@ -3,19 +3,43 @@ package vector
 import (
 	"fmt"
 	"math"
+	"strconv"
 )
 
 type Vector []float64
 
-// NewVector creates a Vector with default value.
-func NewVector(size int, defVal float64) Vector {
-	v := make(Vector, size)
-	if defVal != 0 {
-		for i, _ := range v {
-			v[i] = defVal
-		}
+// NewVector initialize new Vector
+func NewVector(x ...interface{}) (v Vector) {
+	v = make(Vector, 0, len(x))
+	for _, x := range x {
+		v = append(v, ToFloat64(x))
 	}
-	return v
+	return
+}
+
+func ToFloat64(v interface{}) float64 {
+	switch v := v.(type) {
+	case uint:
+		return float64(v)
+	case uint32:
+		return float64(v)
+	case uint64:
+		return float64(v)
+	case int:
+		return float64(v)
+	case int32:
+		return float64(v)
+	case int64:
+		return float64(v)
+	case float32:
+		return float64(v)
+	case float64:
+		return v
+	case string:
+		f, _ := strconv.ParseFloat(v, 64)
+		return f
+	}
+	return 0
 }
 
 // Range creates a Vector containing a range of elements.
