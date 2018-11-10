@@ -127,14 +127,20 @@ func (x Int) Add(y Int) Int {
 	return Int{new(big.Int).Add(x.i, y.i)}
 }
 
+func (x *Int) Increment(y Int) {
+	if y.IsZero() {
+		return
+	}
+	if x.i == nil {
+		x.i = new(big.Int)
+	}
+	x.i = x.i.Add(x.i, y.i)
+	return
+}
+
 func (x Int) AddInt64(y int64) Int {
 	return x.Add(NewInt(y))
 }
-
-//func (x *Int) Increment(y int64) *Int {
-//	a := x.Add(y)
-//	return x
-//}
 
 func (x Int) Sub(y Int) Int {
 	if y.IsZero() {
