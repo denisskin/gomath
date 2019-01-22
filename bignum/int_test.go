@@ -93,7 +93,7 @@ func TestInt_Mul(t *testing.T) {
 	assert.Equal(t, NewInt(-6), z)
 }
 
-func TestInt_BinWrite(t *testing.T) {
+func TestInt_BinaryEncode(t *testing.T) {
 	var x Int
 	var y = NewInt(123456)
 
@@ -104,7 +104,7 @@ func TestInt_BinWrite(t *testing.T) {
 	assert.Equal(t, bin.Encode(123456), data1)
 }
 
-func TestInt_BinRead(t *testing.T) {
+func TestInt_BinaryDecode(t *testing.T) {
 	data := bin.Encode(-0x7fffffffffffffff)
 
 	var x Int
